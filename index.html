@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rona &amp; Parsa — Road to Cologne</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caprasimo&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root{--grape:#241338;--cream:#FFF6E9;--coral:#FF6B5B;--mango:#FFC145;
+        --aqua:#2FD3B8;--pink:#FF4D9D;--violet:#9B6BFF;}
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--grape);
+    background-image:
+      radial-gradient(900px 600px at 85% -5%, rgba(255,77,157,.38), transparent 60%),
+      radial-gradient(800px 700px at 5% 15%, rgba(155,107,255,.34), transparent 62%),
+      radial-gradient(900px 800px at 50% 105%, rgba(47,211,184,.22), transparent 65%);
+    background-attachment:fixed;color:var(--cream);
+    font-family:'Outfit',ui-sans-serif,'Segoe UI',system-ui,sans-serif;
+    font-weight:300;font-size:16px;line-height:1.7;-webkit-font-smoothing:antialiased;}
+  .shell{max-width:780px;margin:0 auto;padding:0 18px 90px;}
+  ::selection{background:var(--mango);color:var(--grape);}
+
+  .rail{position:sticky;top:0;z-index:50;background:rgba(36,19,56,.82);backdrop-filter:blur(10px);}
+  .rail-in{max-width:780px;margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:11px;}
+  .rail-label{font-size:13.5px;font-weight:600;white-space:nowrap;}
+  .rail-track{flex:1;height:8px;border-radius:20px;background:rgba(255,246,233,.14);overflow:hidden;}
+  .rail-fill{height:100%;width:0;border-radius:20px;
+    background:linear-gradient(90deg,var(--mango),var(--coral),var(--pink));
+    transition:width .5s cubic-bezier(.2,.9,.3,1);}
+  .rail-btn{background:none;border:0;color:rgba(255,246,233,.55);font-family:inherit;
+    font-size:15px;cursor:pointer;padding:3px 5px;line-height:1;}
+  .rail-btn:hover{color:var(--mango);}
+  .rail-btn.small{font-size:12.5px;}
+  .rail-btn.calling{color:var(--mango);animation:beat 1.6s ease-in-out infinite;}
+  @keyframes beat{0%,100%{transform:scale(1);}50%{transform:scale(1.22);}}
+
+  .cover{position:relative;min-height:88vh;display:flex;flex-direction:column;justify-content:center;
+    margin:16px 0 26px;border-radius:26px;overflow:hidden;padding:54px 26px 46px;
+    background:linear-gradient(150deg,#FF4D9D,#9B6BFF 55%,#2FD3B8);}
+  .cover .photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.92;}
+  .cover .veil{position:absolute;inset:0;background:
+    linear-gradient(180deg,rgba(36,19,56,.62) 0%,rgba(36,19,56,.2) 30%,rgba(36,19,56,.24) 55%,rgba(36,19,56,.7) 100%);}
+  .cover.has-photo h1{text-shadow:0 3px 20px rgba(20,8,34,.85),0 1px 3px rgba(20,8,34,.9);}
+  .cover.has-photo .kicker,.cover.has-photo .route,.cover.has-photo .cover-note{
+    text-shadow:0 2px 12px rgba(20,8,34,.9);}
+  .cover > *{position:relative;z-index:2;}
+  .kicker{margin:0 0 16px;font-size:13.5px;font-weight:600;color:var(--mango);text-align:center;}
+  h1{font-family:'Caprasimo',Georgia,serif;font-weight:400;font-size:clamp(38px,10vw,76px);
+    line-height:.98;margin:0;text-align:center;text-shadow:0 6px 0 rgba(36,19,56,.28);}
+  h1 em{font-style:normal;display:block;color:var(--mango);}
+  .route{text-align:center;margin:22px 0 0;font-size:16px;font-weight:600;}
+  .route b{font-weight:800;} .route i{font-style:normal;opacity:.7;padding:0 10px;}
+  .cover-note{max-width:38ch;margin:16px auto 0;text-align:center;font-size:16px;}
+  .cover-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:30px;}
+  .btn{font-family:inherit;font-size:15px;font-weight:600;cursor:pointer;border:0;border-radius:40px;
+    padding:12px 26px;background:var(--mango);color:var(--grape);transition:transform .15s;}
+  .btn:hover{transform:translateY(-2px);}
+  .btn.ghost{background:rgba(36,19,56,.45);color:var(--cream);box-shadow:inset 0 0 0 1.5px rgba(255,246,233,.55);}
+  .reveal{opacity:0;transform:translateY(16px) rotate(-.6deg);animation:rise .8s cubic-bezier(.2,.9,.3,1) forwards;}
+  .reveal.d1{animation-delay:.1s}.reveal.d2{animation-delay:.24s}.reveal.d3{animation-delay:.38s}
+  @keyframes rise{to{opacity:1;transform:none;}}
+
+  .page{position:relative;border-radius:22px;overflow:hidden;margin:0 0 20px;
+    box-shadow:0 22px 40px -28px rgba(0,0,0,.85);}
+  .page .photo{position:absolute;inset:0;background-size:cover;background-position:center;opacity:.45;}
+  .page .veil{position:absolute;inset:0;}
+  .page > .inner{position:relative;z-index:2;}
+  .page.done .tag::after{content:" ✓";}
+  .page-head{padding:20px 22px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .page-head h2{font-family:'Caprasimo',Georgia,serif;font-weight:400;font-size:27px;line-height:1.15;
+    margin:0;text-shadow:0 2px 12px rgba(20,8,34,.55);}
+  .tag{font-size:12px;font-weight:600;padding:3px 12px;border-radius:30px;
+    background:rgba(255,246,233,.16);box-shadow:inset 0 0 0 1.2px rgba(255,246,233,.34);white-space:nowrap;}
+  .count{margin-left:auto;font-size:13.5px;font-weight:600;opacity:.85;}
+
+  ul{list-style:none;margin:0;padding:0 12px 4px;}
+  li.task{display:flex;align-items:center;gap:10px;padding:11px 10px;border-radius:14px;transition:background .2s;}
+  li.task:hover{background:rgba(255,246,233,.08);}
+  .task-body{flex:1;min-width:0;cursor:text;}
+  .task-title{font-size:16px;line-height:1.5;text-shadow:0 1px 8px rgba(20,8,34,.4);}
+  .task-note{font-size:13px;opacity:.75;margin-top:1px;}
+  li.done .task-title{opacity:.45;text-decoration:line-through;text-decoration-thickness:2px;}
+  .stamps{display:flex;gap:8px;flex-shrink:0;}
+  .stamp{width:44px;height:44px;flex-shrink:0;border-radius:50%;cursor:pointer;padding:0;
+    font-family:'Caprasimo',Georgia,serif;font-size:17px;background:rgba(36,19,56,.25);
+    color:rgba(255,246,233,.6);border:2px dashed rgba(255,246,233,.45);
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color .18s,color .18s,background .18s;}
+  .stamp:hover{color:var(--cream);border-color:var(--cream);}
+  .stamp.on{border-style:solid;transform:rotate(-8deg);color:var(--grape);}
+  .stamp.on.rona{background:var(--pink);border-color:var(--pink);}
+  .stamp.on.parsa{background:var(--aqua);border-color:var(--aqua);}
+  .stamp.pop{animation:stamp .45s cubic-bezier(.2,1.6,.4,1);}
+  @keyframes stamp{0%{transform:rotate(-26deg) scale(1.7);opacity:.2;}
+    58%{transform:rotate(-3deg) scale(.9);opacity:1;}100%{transform:rotate(-8deg) scale(1);}}
+  button:focus-visible,input:focus-visible{outline:3px solid var(--mango);outline-offset:3px;}
+  .pen{background:none;border:0;color:rgba(255,246,233,.4);font-size:14px;cursor:pointer;
+    padding:2px 4px;font-family:inherit;flex-shrink:0;}
+  .pen:hover{color:var(--mango);}
+
+  li.editing{background:rgba(36,19,56,.55);display:block;padding:14px 12px;}
+  .edit-in{width:100%;font-family:inherit;font-size:16px;color:var(--cream);
+    background:rgba(36,19,56,.5);border:0;box-shadow:inset 0 0 0 1.5px rgba(255,246,233,.4);
+    border-radius:12px;padding:9px 14px;}
+  .edit-row{display:flex;gap:7px;flex-wrap:wrap;align-items:center;margin-top:10px;}
+  .chip{font-family:inherit;font-size:12.5px;font-weight:600;cursor:pointer;border:0;border-radius:30px;
+    padding:5px 13px;background:rgba(255,246,233,.14);color:var(--cream);}
+  .chip.sel{background:var(--cream);color:var(--grape);}
+  .edit-row .save{margin-left:auto;background:var(--mango);color:var(--grape);}
+  .edit-row .kill{background:rgba(255,107,91,.25);color:#FFD5CF;}
+
+  .add{display:flex;gap:8px;padding:10px 22px 20px;}
+  .add input{flex:1;min-width:0;font-family:inherit;font-size:15px;color:var(--cream);
+    background:rgba(36,19,56,.4);border:0;box-shadow:inset 0 0 0 1.5px rgba(255,246,233,.32);
+    border-radius:30px;padding:10px 16px;}
+  .add input::placeholder{color:rgba(255,246,233,.55);}
+  .add button{font-family:inherit;font-size:14.5px;font-weight:600;cursor:pointer;
+    background:var(--cream);color:var(--grape);border:0;border-radius:30px;padding:10px 20px;}
+
+  .note{margin:14px 0 0;border-radius:16px;padding:14px 16px;font-size:14.5px;
+    background:rgba(255,246,233,.1);box-shadow:inset 0 0 0 1.5px rgba(255,246,233,.28);}
+  .note.bad{background:rgba(255,107,91,.2);box-shadow:inset 0 0 0 1.5px rgba(255,107,91,.6);}
+  .note b{font-weight:600;}
+  .note .chip{margin:10px 8px 0 0;}
+  .note input{width:100%;margin-top:10px;font-family:inherit;font-size:14px;color:var(--cream);
+    background:rgba(36,19,56,.5);border:0;box-shadow:inset 0 0 0 1.5px rgba(255,246,233,.3);
+    border-radius:10px;padding:9px 12px;}
+  .slider{width:100%;accent-color:var(--mango);margin:10px 0 2px;}
+
+  .legend{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:0 0 22px;font-size:14px;}
+  .legend span{background:rgba(255,246,233,.1);border-radius:30px;padding:5px 15px;font-weight:600;}
+  .legend i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:8px;}
+  .footer{text-align:center;font-size:13.5px;padding:24px 0 0;opacity:.6;}
+  .footer button{background:none;border:0;color:var(--mango);font-family:inherit;font-size:13.5px;
+    cursor:pointer;text-decoration:underline;}
+  .state-msg{text-align:center;opacity:.7;padding:50px 0;}
+  .confetti{position:fixed;width:9px;height:14px;z-index:99;pointer-events:none;border-radius:2px;}
+  @keyframes fall{to{transform:translate(var(--dx),90vh) rotate(640deg);opacity:0;}}
+
+  @media (max-width:540px){
+    .cover{padding:44px 18px 38px;border-radius:20px;}
+    .page-head,.add{padding-left:16px;padding-right:16px;}
+    ul{padding:0 8px 4px;} .count{margin-left:0;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;} .reveal{opacity:1;transform:none;}
+  }
+</style>
+</head>
+<body>
+
+<div class="rail">
+  <div class="rail-in">
+    <span class="rail-label" id="railLabel">Loading…</span>
+    <div class="rail-track"><div class="rail-fill" id="railFill"></div></div>
+    <button class="rail-btn" id="soundBtn" title="Play the song">♪</button>
+    <button class="rail-btn small" id="syncBtn" title="Get the latest ticks">Refresh</button>
+  </div>
+</div>
+
+<div class="shell">
+  <div id="notes"></div>
+
+  <header class="cover" id="cover">
+    <div class="photo" id="coverPhoto"></div>
+    <div class="veil"></div>
+    <p class="kicker reveal">The big move · 2026</p>
+    <h1 class="reveal d1">Welcome to<em>Rona &amp; Parsa's</em>road to Cologne</h1>
+    <p class="route reveal d2"><b>Isfahan</b><i>✈</i><b>Köln</b></p>
+    <p class="cover-note reveal d2">Everything you two need to do, in one place. Finish a task, slam your stamp on it. You both see the same page, so a stamp here shows up over there.</p>
+    <div class="cover-actions reveal d3">
+      <button class="btn" id="startBtn">Show me the list</button>
+      <button class="btn ghost" id="tuneBtn">Set the song start</button>
+    </div>
+  </header>
+
+  <div class="legend">
+    <span><i style="background:var(--pink)"></i>Rona's stamp</span>
+    <span><i style="background:var(--aqua)"></i>Parsa's stamp</span>
+  </div>
+
+  <main id="board"><p class="state-msg">Opening your list…</p></main>
+  <p class="footer" id="footer">Tap any task to rewrite it.</p>
+</div>
+
+<audio id="song" preload="auto"></audio>
+
+<script>
+/* ===================================================================
+   FILES YOU DROP NEXT TO THIS ONE  (all optional)
+     song.mp3     the song that greets you
+     cover.jpg    the big photo on the welcome screen
+     docs.jpg  uni.jpg  home.jpg  fly.jpg  land.jpg
+                  one photo behind each section
+   =================================================================== */
+const SONG_FILE = 'song.mp3';
+const CLIP = 25;                       // seconds of the song to play
+
+const SECTIONS = [
+  { id:'docs', title:'Papers, money & visa', tag:'Right now', color:'#FF4D9D', tasks:[
+    { id:'d1', t:'Get transcripts officially translated and certified', who:'both' },
+    { id:'d2', t:'Passport valid long enough + biometric photos', who:'both' },
+    { id:'d3', t:'Open the blocked account or gather proof of funds', n:'Check what your Ausländerbehörde accepts', who:'both' },
+    { id:'d4', t:'Move the euros over from London by SEPA', who:'rona' },
+    { id:'d5', t:'Book the student visa appointment', who:'both' },
+    { id:'d6', t:'Travel insurance for the first weeks', who:'both' },
+    { id:'d7', t:'Scan every document and back it up to the cloud', who:'rona' },
+  ]},
+  { id:'uni', title:'University sign-up', tag:'Before the flight', color:'#9B6BFF', tasks:[
+    { id:'u1', t:'Pay the Semesterbeitrag through KLIPS 2.0', who:'rona' },
+    { id:'u2', t:'Sign up for TK insurance, sender number H0000517', who:'rona' },
+    { id:'u3', t:'Send the enrolment documents to Cologne', who:'rona' },
+    { id:'u4', t:'Enrol on the unisono portal in Siegen', n:'Deadline mid-October', who:'parsa' },
+    { id:'u5', t:'Sign up for TK insurance, sender number H0000671', who:'parsa' },
+    { id:'u6', t:'Activate the UCCard and the Deutschlandsemesterticket', who:'rona' },
+  ]},
+  { id:'home', title:'Finding a home', tag:'Before the flight', color:'#2FD3B8', tasks:[
+    { id:'h1', t:'Hunt for a Zwischenmiete on wg-gesucht and Wunderflats', who:'both' },
+    { id:'h2', t:'Write the intro message you send to every listing', n:'One German version, one English', who:'rona' },
+    { id:'h3', t:'Compare Sülz, Lindenthal and Braunsfeld', who:'both' },
+    { id:'h4', t:'Book somewhere to sleep for the first week', who:'both' },
+    { id:'h5', t:'Ask the landlord for the Wohnungsgeberbestätigung', who:'both' },
+  ]},
+  { id:'fly', title:'Flight week', tag:'The last stretch', color:'#FFC145', tasks:[
+    { id:'f1', t:'Book the flights', who:'both' },
+    { id:'f2', t:'Pack and weigh the suitcases', who:'both' },
+    { id:'f3', t:'Medication plus translated prescriptions', who:'both' },
+    { id:'f4', t:'Print the papers you need in your hand at the border', who:'both' },
+  ]},
+  { id:'land', title:'First weeks in Germany', tag:'After landing', color:'#FF6B5B', tasks:[
+    { id:'a1', t:'Anmeldung at the Bürgeramt', n:'Within two weeks of arriving', who:'both' },
+    { id:'a2', t:'Open a German bank account', who:'both' },
+    { id:'a3', t:'Get German SIM cards', who:'both' },
+    { id:'a4', t:'Book the Ausländerbehörde appointment for the residence permit', who:'both' },
+    { id:'a5', t:'Register for the Rundfunkbeitrag', who:'both' },
+    { id:'a6', t:'Work out the RE9 timetable to Siegen', who:'parsa' },
+  ]},
+];
+
+const PEOPLE = { rona:{ label:'R', name:'Rona' }, parsa:{ label:'P', name:'Parsa' } };
+const CHEERS = ['Let\'s get going','Nice start','Rolling now','Serious progress','More than halfway','The end is in sight','Almost packed','Cologne is waiting'];
+const LOCAL_KEY = 'cologne-checklist';
+
+let state = { checks:{}, custom:[], removed:[], edits:{}, songStart:0 };
+let editing = null, doneSections = new Set(), played = false, muted = false;
+let room = (location.hash.match(/room=([A-Za-z0-9_-]+)/) || [])[1] || null;
+let lastWrite = 0, pushing = false, syncNote = '';
+
+/* ---------- where the ticks live ---------- */
+const API = 'https://jsonblob.com/api/jsonBlob';
+function readLocal(){
+  try{ const v = localStorage.getItem(LOCAL_KEY); if (v) state = Object.assign(state, JSON.parse(v)); }catch(e){}
+}
+function writeLocal(){
+  try{ localStorage.setItem(LOCAL_KEY, JSON.stringify(state)); }catch(e){}
+}
+async function pull(){
+  if (!room) return;
+  try{
+    const r = await fetch(API + '/' + room, { headers:{ Accept:'application/json' } });
+    if (!r.ok) throw new Error('server said ' + r.status);
+    const v = await r.json();
+    if (v && typeof v === 'object'){
+      state = Object.assign({ checks:{}, custom:[], removed:[], edits:{}, songStart:0 }, v);
+      writeLocal(); syncNote = ''; render();
+    }
+  }catch(e){ syncNote = 'Could not reach the shared copy: ' + ((e && e.message) || e); paintNotes(); }
+}
+async function push(){
+  writeLocal();
+  if (!room) return;
+  lastWrite = Date.now(); pushing = true;
+  try{
+    const r = await fetch(API + '/' + room, {
+      method:'PUT', headers:{ 'Content-Type':'application/json', Accept:'application/json' },
+      body: JSON.stringify(state) });
+    if (!r.ok) throw new Error('server said ' + r.status);
+    syncNote = '';
+  }catch(e){ syncNote = 'Your tick was kept on this device but not sent: ' + ((e && e.message) || e); paintNotes(); }
+  pushing = false;
+}
+async function makeRoom(btn){
+  btn.textContent = 'Setting up…';
+  try{
+    const r = await fetch(API, { method:'POST',
+      headers:{ 'Content-Type':'application/json', Accept:'application/json' },
+      body: JSON.stringify(state) });
+    if (!r.ok) throw new Error('server said ' + r.status);
+    const loc = r.headers.get('Location') || r.headers.get('X-jsonblob') || '';
+    const id = loc.split('/').pop();
+    if (!id) throw new Error('no id came back');
+    room = id;
+    history.replaceState(null, '', location.pathname + location.search + '#room=' + id);
+    paintNotes();
+  }catch(e){
+    syncNote = 'Sharing could not be switched on: ' + ((e && e.message) || e);
+    paintNotes();
+  }
+}
+
+/* ---------- the notes at the top ---------- */
+function paintNotes(){
+  const el = document.getElementById('notes');
+  el.innerHTML = '';
+  if (!room){
+    const d = document.createElement('div');
+    d.className = 'note';
+    d.innerHTML = '<b>This list is only on this device.</b> Switch on sharing once, ' +
+      'then send Parsa the link that appears and your stamps will follow each other.';
+    const b = document.createElement('button');
+    b.className = 'chip'; b.textContent = 'Share with Parsa';
+    b.onclick = () => makeRoom(b);
+    d.appendChild(b);
+    el.appendChild(d);
+  } else {
+    const d = document.createElement('div');
+    d.className = 'note';
+    d.innerHTML = '<b>Sharing is on.</b> Send this exact link to Parsa — the part after # is what ties you together.';
+    const i = document.createElement('input');
+    i.readOnly = true; i.value = location.href;
+    i.onclick = () => i.select();
+    d.appendChild(i);
+    const b = document.createElement('button');
+    b.className = 'chip'; b.textContent = 'Copy link';
+    b.onclick = async () => {
+      try{ await navigator.clipboard.writeText(location.href); b.textContent = 'Copied'; }
+      catch(e){ i.select(); b.textContent = 'Select and copy'; }
+    };
+    d.appendChild(b);
+    el.appendChild(d);
+  }
+  if (syncNote){
+    const w = document.createElement('div');
+    w.className = 'note bad'; w.textContent = syncNote;
+    el.appendChild(w);
+  }
+}
+
+/* ---------- photos from files beside this page ---------- */
+function tryPhoto(id, file){
+  const img = new Image();
+  img.onload = () => {
+    if (id === 'cover'){
+      document.getElementById('coverPhoto').style.backgroundImage = 'url("' + file + '")';
+      document.getElementById('cover').classList.add('has-photo');
+    } else {
+      const el = document.querySelector('#sec-' + id + ' .photo');
+      if (el) el.style.backgroundImage = 'url("' + file + '")';
+    }
+  };
+  img.src = file;
+}
+function paintPhotos(){
+  tryPhoto('cover', 'cover.jpg');
+  SECTIONS.forEach(s => tryPhoto(s.id, s.id + '.jpg'));
+}
+
+/* ---------- the song ---------- */
+const audio = document.getElementById('song');
+let stopper = null;
+function playSong(){
+  if (muted) return Promise.resolve(false);
+  if (!audio.src) audio.src = SONG_FILE;
+  try{ audio.currentTime = state.songStart || 0; }catch(e){}
+  audio.volume = 0;
+  clearTimeout(stopper);
+  const p = audio.play();
+  if (!p) return Promise.resolve(false);
+  return p.then(() => {
+    played = true;
+    document.getElementById('soundBtn').classList.remove('calling');
+    let v = 0;
+    const up = setInterval(() => { v = Math.min(.9, v + .12); audio.volume = v; if (v >= .9) clearInterval(up); }, 40);
+    stopper = setTimeout(() => {
+      const down = setInterval(() => {
+        audio.volume = Math.max(0, audio.volume - .08);
+        if (audio.volume <= .01){ clearInterval(down); audio.pause(); }
+      }, 60);
+    }, Math.max(1000, (CLIP - 1.2) * 1000));
+    return true;
+  }).catch(() => false);
+}
+document.getElementById('soundBtn').onclick = async () => {
+  if (!played && !muted){ if (await playSong()) return; }
+  muted = !muted;
+  const b = document.getElementById('soundBtn');
+  b.textContent = muted ? '♪̸' : '♪';
+  b.classList.remove('calling');
+  if (muted){ clearTimeout(stopper); audio.pause(); } else playSong();
+};
+document.getElementById('tuneBtn').onclick = () => {
+  const el = document.getElementById('notes');
+  if (document.getElementById('tuner')) return;
+  const d = document.createElement('div');
+  d.className = 'note'; d.id = 'tuner';
+  d.innerHTML = '<b>Where should the song start?</b> The 25 seconds from here play when the page opens.';
+  const s = document.createElement('input');
+  s.type = 'range'; s.className = 'slider'; s.min = 0; s.step = 1;
+  s.max = Math.max(1, Math.floor((audio.duration || 240) - CLIP));
+  s.value = state.songStart || 0;
+  const t = document.createElement('div');
+  const fmt = v => Math.floor(v / 60) + ':' + String(Math.floor(v % 60)).padStart(2, '0');
+  const show = () => { t.textContent = 'From ' + fmt(+s.value) + ' to ' + fmt(+s.value + CLIP); };
+  s.oninput = show; show();
+  d.appendChild(s); d.appendChild(t);
+  const hear = document.createElement('button');
+  hear.className = 'chip'; hear.textContent = 'Hear it';
+  hear.onclick = () => { state.songStart = +s.value; muted = false; playSong(); };
+  const keep = document.createElement('button');
+  keep.className = 'chip sel'; keep.textContent = 'Keep this';
+  keep.onclick = () => { state.songStart = +s.value; push(); d.remove(); };
+  d.appendChild(hear); d.appendChild(keep);
+  el.appendChild(d);
+};
+
+/* ---------- data ---------- */
+function allTasks(){
+  return SECTIONS.map(s => ({ ...s,
+    tasks:[...s.tasks, ...state.custom.filter(c => c.s === s.id)]
+      .filter(t => !state.removed.includes(t.id))
+      .map(t => ({ ...t, ...(state.edits[t.id] || {}) })) }));
+}
+const slots = t => t.who === 'both' ? ['rona','parsa'] : [t.who];
+const isDone = t => slots(t).every(p => state.checks[t.id] && state.checks[t.id][p]);
+function progress(){
+  let d = 0, tot = 0;
+  allTasks().forEach(s => s.tasks.forEach(t => slots(t).forEach(p => {
+    tot++; if (state.checks[t.id] && state.checks[t.id][p]) d++; })));
+  return { d, tot };
+}
+function toggle(id, person, btn){
+  const c = state.checks[id] || (state.checks[id] = {});
+  c[person] = !c[person];
+  if (c[person]){ btn.classList.add('pop'); setTimeout(() => btn.classList.remove('pop'), 460); }
+  push(); render(false);
+}
+function addTask(sectionId, input){
+  const v = input.value.trim(); if (!v) return;
+  state.custom.push({ id:'c' + Date.now().toString(36), s:sectionId, t:v, who:'both' });
+  input.value = ''; push(); render();
+  const el = document.querySelector('#sec-' + sectionId + ' .add input'); if (el) el.focus();
+}
+function removeTask(id){ state.removed.push(id); editing = null; push(); render(); }
+function saveEdit(id, title, who){
+  const t = title.trim(); if (!t) return;
+  state.edits[id] = { t, who }; editing = null; push(); render();
+}
+function restoreAll(){ state.removed = []; push(); render(); }
+
+function confetti(el){
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const r = el.getBoundingClientRect();
+  const cols = ['#FF4D9D','#FFC145','#2FD3B8','#9B6BFF','#FF6B5B','#FFF6E9'];
+  for (let i = 0; i < 26; i++){
+    const p = document.createElement('div');
+    p.className = 'confetti';
+    p.style.background = cols[i % cols.length];
+    p.style.left = (r.left + Math.random() * r.width) + 'px';
+    p.style.top = (r.top + 20) + 'px';
+    p.style.setProperty('--dx', (Math.random() * 260 - 130) + 'px');
+    p.style.animation = 'fall ' + (1.1 + Math.random() * .9) + 's cubic-bezier(.3,.6,.5,1) forwards';
+    document.body.appendChild(p);
+    setTimeout(() => p.remove(), 2200);
+  }
+}
+
+/* ---------- render ---------- */
+function render(rebuild = true){
+  const { d, tot } = progress();
+  document.getElementById('railFill').style.width = tot ? (d / tot * 100) + '%' : '0';
+  document.getElementById('railLabel').textContent =
+    d + '/' + tot + ' · ' + CHEERS[Math.min(CHEERS.length - 1, Math.floor(d / (tot || 1) * CHEERS.length))];
+
+  if (!rebuild){
+    allTasks().forEach(sec => {
+      sec.tasks.forEach(t => {
+        const li = document.getElementById('t-' + t.id); if (!li) return;
+        li.classList.toggle('done', isDone(t));
+        slots(t).forEach(p => {
+          const b = li.querySelector('.stamp.' + p); if (!b) return;
+          const on = !!(state.checks[t.id] && state.checks[t.id][p]);
+          b.classList.toggle('on', on); b.setAttribute('aria-pressed', on);
+        });
+      });
+      const page = document.getElementById('sec-' + sec.id);
+      const n = sec.tasks.filter(isDone).length;
+      page.querySelector('.count').textContent = n + '/' + sec.tasks.length;
+      const complete = n === sec.tasks.length && sec.tasks.length > 0;
+      page.classList.toggle('done', complete);
+      if (complete && !doneSections.has(sec.id)){ doneSections.add(sec.id); confetti(page); }
+      if (!complete) doneSections.delete(sec.id);
+    });
+    return;
+  }
+
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  allTasks().forEach(sec => {
+    const n = sec.tasks.filter(isDone).length;
+    const complete = n === sec.tasks.length && sec.tasks.length > 0;
+    if (complete) doneSections.add(sec.id);
+
+    const page = document.createElement('section');
+    page.className = 'page' + (complete ? ' done' : '');
+    page.id = 'sec-' + sec.id;
+    page.innerHTML = '<div class="photo"></div><div class="veil"></div>';
+    page.querySelector('.veil').style.background =
+      'linear-gradient(155deg, ' + sec.color + 'CC, #241338E6 78%)';
+
+    const inner = document.createElement('div');
+    inner.className = 'inner';
+    const head = document.createElement('div');
+    head.className = 'page-head';
+    head.innerHTML = '<h2></h2><span class="tag"></span><span class="count">' + n + '/' + sec.tasks.length + '</span>';
+    head.querySelector('h2').textContent = sec.title;
+    head.querySelector('.tag').textContent = sec.tag;
+    inner.appendChild(head);
+
+    const ul = document.createElement('ul');
+    sec.tasks.forEach(t => {
+      const li = document.createElement('li');
+      li.id = 't-' + t.id;
+
+      if (editing === t.id){
+        li.className = 'task editing';
+        const inp = document.createElement('input');
+        inp.className = 'edit-in'; inp.type = 'text'; inp.value = t.t;
+        let who = t.who;
+        const row = document.createElement('div');
+        row.className = 'edit-row';
+        [['both','Both of us'],['rona','Rona'],['parsa','Parsa']].forEach(([k, lab]) => {
+          const c = document.createElement('button');
+          c.className = 'chip' + (who === k ? ' sel' : ''); c.textContent = lab;
+          c.onclick = () => { who = k; row.querySelectorAll('.chip').forEach(x => x.classList.remove('sel')); c.classList.add('sel'); };
+          row.appendChild(c);
+        });
+        const kill = document.createElement('button');
+        kill.className = 'chip kill'; kill.textContent = 'Delete';
+        kill.onclick = () => removeTask(t.id);
+        const save = document.createElement('button');
+        save.className = 'chip save'; save.textContent = 'Save';
+        save.onclick = () => saveEdit(t.id, inp.value, who);
+        inp.onkeydown = e => { if (e.key === 'Enter') saveEdit(t.id, inp.value, who);
+                               if (e.key === 'Escape'){ editing = null; render(); } };
+        row.appendChild(kill); row.appendChild(save);
+        li.appendChild(inp); li.appendChild(row);
+        ul.appendChild(li);
+        setTimeout(() => inp.focus(), 0);
+        return;
+      }
+
+      li.className = 'task' + (isDone(t) ? ' done' : '');
+      const body = document.createElement('div');
+      body.className = 'task-body';
+      body.innerHTML = '<div class="task-title"></div>' + (t.n ? '<div class="task-note"></div>' : '');
+      body.querySelector('.task-title').textContent = t.t;
+      if (t.n) body.querySelector('.task-note').textContent = t.n;
+      body.onclick = () => { editing = t.id; render(); };
+      li.appendChild(body);
+
+      const pen = document.createElement('button');
+      pen.className = 'pen'; pen.textContent = '✎';
+      pen.setAttribute('aria-label', 'Edit or delete this task');
+      pen.onclick = () => { editing = t.id; render(); };
+      li.appendChild(pen);
+
+      const wrap = document.createElement('div');
+      wrap.className = 'stamps';
+      slots(t).forEach(p => {
+        const on = !!(state.checks[t.id] && state.checks[t.id][p]);
+        const b = document.createElement('button');
+        b.className = 'stamp ' + p + (on ? ' on' : '');
+        b.textContent = PEOPLE[p].label;
+        b.title = PEOPLE[p].name;
+        b.setAttribute('aria-label', PEOPLE[p].name + ': ' + t.t);
+        b.setAttribute('aria-pressed', on);
+        b.onclick = () => toggle(t.id, p, b);
+        wrap.appendChild(b);
+      });
+      li.appendChild(wrap);
+      ul.appendChild(li);
+    });
+    inner.appendChild(ul);
+
+    const add = document.createElement('div');
+    add.className = 'add';
+    const inp = document.createElement('input');
+    inp.type = 'text'; inp.placeholder = 'Add your own task here';
+    inp.onkeydown = e => { if (e.key === 'Enter') addTask(sec.id, inp); };
+    const btn = document.createElement('button');
+    btn.textContent = 'Add';
+    btn.onclick = () => addTask(sec.id, inp);
+    add.appendChild(inp); add.appendChild(btn);
+    inner.appendChild(add);
+
+    page.appendChild(inner);
+    board.appendChild(page);
+  });
+
+  paintPhotos();
+
+  const f = document.getElementById('footer');
+  f.textContent = 'Tap any task to rewrite it.';
+  if (state.removed.length){
+    const u = document.createElement('button');
+    u.textContent = ' Bring back ' + state.removed.length + ' deleted task' + (state.removed.length > 1 ? 's' : '');
+    u.onclick = restoreAll;
+    f.appendChild(u);
+  }
+}
+
+document.getElementById('startBtn').onclick = () => {
+  if (!played) playSong();
+  document.getElementById('board').scrollIntoView({ behavior:'smooth', block:'start' });
+};
+document.getElementById('syncBtn').onclick = pull;
+document.addEventListener('visibilitychange', () => { if (!document.hidden) pull(); });
+setInterval(() => { if (!document.hidden && !pushing && Date.now() - lastWrite > 4000) pull(); }, 15000);
+
+(async () => {
+  readLocal();
+  render();
+  paintNotes();
+  await pull();
+  audio.src = SONG_FILE;
+  if (!(await playSong())){
+    document.getElementById('soundBtn').classList.add('calling');
+    const kick = async () => { if (await playSong()) document.removeEventListener('pointerdown', kick); };
+    document.addEventListener('pointerdown', kick);
+  }
+})();
+</script>
+</body>
+</html>
